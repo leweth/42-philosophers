@@ -1,0 +1,14 @@
+# Object files
+*.o
+
+# Libraries
+*.a
+
+# Executables
+*.out
+
+# vscode directory
+.vscode
+
+#Random stuff
+.DS_Store
