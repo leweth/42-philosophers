@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 NAME = philo
 
-SRCS = philo.c
+SRCS = philo.c srcs/ft_atou32.c srcs/input_processing.c srcs/print_error.c
 
 OBJS = ${SRCS:.c=.o}
 
