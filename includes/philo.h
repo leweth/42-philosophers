@@ -59,7 +59,7 @@ typedef struct s_philo
 {
 	pthread_t		ptid;
 	u_int32_t		id; // starts at 1
-	bool			has_fork;
+	bool			in_use;
 	pthread_mutex_t	*fork_lock;
 }			t_philo;
 

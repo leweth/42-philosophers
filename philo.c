@@ -53,13 +53,17 @@ int	main(int argc, char **argv)
 	pthread_join(thread_id[1], NULL);
 } */
 
-void	ft_clean(t_philo *philos, u_int32_t current_index)
+void	ft_clean(t_philo *philos, u_int32_t current_index) // frees fork locks and the array of philos
 {
 	u_int32_t	i;
 
 	i = 0;
 	while (i < current_index)
-		free(philos[i++].fork_lock);
+	{
+		pthread_mutex_destroy(philos[i].fork_lock);
+		free(philos[i].fork_lock);
+		i++;
+	}
 	free(philos);
 }
 
@@ -76,12 +80,13 @@ int16_t	init_variable(t_process_data *p_data)
 	while (i <= p_data->SIM_NUM_OF_PHILOS)
 	{
 		p_data->philos[i].id = i;
-		p_data->philos[i].has_fork = true;
+		p_data->philos[i].in_use = false;
 		p_data->philos[i].fork_lock = 
 			(pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 		if (!(p_data->philos[i].fork_lock))
 			return (ft_clean(p_data->philos, i), 
 				p_data->err = FAILED_MALLOC_ERR, p_data->err);
+		pthread_mutex_init(p_data->philos[i].fork_lock, NULL); // what do they mean by initilize it?
 		i++;
 	}
 }
@@ -100,4 +105,5 @@ int main(int argc, char **argv)
 	{
 		pthread_create(p_data.philos->ptid, NULL, NULL, &p_data);
 	}
+	ft_clean(p_data.philos);
 }
