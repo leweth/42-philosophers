@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/08 18:56:25 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/11 12:23:49 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdbool.h>
 #include <sys/time.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 /* General utilities macros */
 
@@ -61,6 +62,7 @@ typedef struct s_philo
 	u_int32_t		id; // starts at 1
 	bool			in_use;
 	pthread_mutex_t	*fork_lock;
+	int64_t			eating_counter;
 }			t_philo;
 
 /* Information about the current process */
@@ -69,6 +71,7 @@ typedef struct s_process_data
 {
 	t_philo		*philos;
 	t_sim_info	current_simulation;
+	bool		*end_mark;
 	int16_t		err;
 }			t_process_data;
 
@@ -76,6 +79,15 @@ typedef struct s_process_data
 
 u_int32_t	ft_atou32(char *str, int16_t *err);
 int16_t		process_input(t_process_data *p_data, int argc, char **argv);
+
+/* Initilialization utilities */
+
+int16_t		init_variable(t_process_data *p_data);
+
+/* Cleaning utilities */
+
+void		clean_philos(t_philo *philos, u_int32_t current_index);
+void		clean_end_mark(bool *end_mark);
 
 /* Error printing function */
 void		print_error(int16_t err);
