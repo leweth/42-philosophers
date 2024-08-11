@@ -41,14 +41,34 @@ int	main(int argc, char **argv)
 	pthread_join(thread_id[1], NULL);
 } */
 
+int64_t	extract_time(u_int32_t *milli_start_time, u_int32_t *micro_start_time)
+{
+	struct timeval	tmp;
+	int				err;
+
+	err = gettimeofday(&tmp, NULL);
+	if (err < 0)
+		return (ERROR_IN_GETTING_TIME);
+	*milli_start_time = tmp.tv_usec * 1000;
+	*micro_start_time = tmp.tv_usec;
+	return (NONE);
+}
+
 int main(int argc, char **argv)
 {
 	int err;
 
 	(void) argc;
-	err = 0;
+	(void) argv;
+	/* err = 0;
 	uint32_t	ret = ft_atou32(argv[1], &err);
 	if (err < 0)
 		return (1);
-	printf("%u\n", ret);
+	printf("%u\n", ret); */
+	u_int32_t timo;
+	u_int32_t timo2;
+
+	extract_time(&timo, &timo2);
+	printf("%u\n", timo);
+	printf("%u\n", timo2);
 }

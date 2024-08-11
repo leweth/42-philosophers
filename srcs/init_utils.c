@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/11 12:20:11 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/11 16:26:41 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ int16_t	init_variable(t_process_data *p_data)
 	if (!p_data->philos)
 		return (p_data->err = FAILED_MALLOC_ERR, p_data->err);
 	i = 0;
-	while (i <= p_data->SIM_NUM_OF_PHILOS)
+	while (i < p_data->SIM_NUM_OF_PHILOS)
 	{
-		p_data->philos[i].id = i;
-		p_data->philos[i].in_use = false;
 		p_data->philos[i].fork_lock = 
 			(pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 		if (!(p_data->philos[i].fork_lock))
@@ -52,5 +50,6 @@ int16_t	init_variable(t_process_data *p_data)
 	init_end_mark(p_data);
 	if (p_data->err != NONE)
 		return (p_data->err);
+	p_data->current_philo_id = 1;
 	return (NONE);
 }
