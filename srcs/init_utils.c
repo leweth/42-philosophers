@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 19:38:44 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:52:31 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 	philo->last_time_ate = 0;
 	philo->err = error;
 	philo->died = false;
-	philo->stop = false;
-	return (philo);
+  	return (philo);
 }
 
 int16_t	init_variable(t_philo **philo, t_sim_info *sim, int16_t *error)

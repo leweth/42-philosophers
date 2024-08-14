@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 19:17:11 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:50:02 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ typedef struct s_philo
 	t_sim_info		*current_simulation;
 	int16_t			*err;
 	bool			died;
-	bool			stop;
 	struct s_philo	*next;
 }			t_philo;
 
