@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 15:21:43 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 19:17:11 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@
 
 /* Syntax beauty macros */
 
-# define SIM_NUM_OF_PHILOS current_simulation.num_of_philos
-# define SIM_TIME_TO_DIE current_simulation.time_to_die
-# define SIM_TIME_TO_EAT current_simulation.time_to_eat
-# define SIM_TIME_TO_SLEEP current_simulation.time_to_sleep
-# define SIM_NUM_OF_TIMES_TO_EAT current_simulation.num_of_times_to_eat
-# define SIM_STOP current_simulation.stop_simulation
-# define SIM_START_TIME current_simulation.start_time
+# define SIM_NUM_OF_PHILOS current_simulation->num_of_philos
+# define SIM_TIME_TO_DIE current_simulation->time_to_die
+# define SIM_TIME_TO_EAT current_simulation->time_to_eat
+# define SIM_TIME_TO_SLEEP current_simulation->time_to_sleep
+# define SIM_NUM_OF_TIMES_TO_EAT current_simulation->num_of_times_to_eat
+# define SIM_STOP current_simulation->stop_simulation
+# define SIM_START_TIME current_simulation->start_time
 # define PHILO_INDEX_CHECK (index + 1) * !(index == p_data->SIM_NUM_OF_PHILOS)
 
 /* Information about the current simulation */
@@ -65,41 +65,37 @@ typedef struct s_sim_info
 
 typedef struct s_philo
 {
+	u_int32_t		id;
 	pthread_t		ptid;
 	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
 	int64_t			eating_counter;
 	u_int32_t		last_time_ate;
+	t_sim_info		*current_simulation;
+	int16_t			*err;
+	bool			died;
+	bool			stop;
+	struct s_philo	*next;
 }			t_philo;
-
-/* Information about the current process */
-
-typedef struct s_process_data
-{
-	t_philo		*philos; // a malloc
-	t_sim_info	current_simulation;
-	u_int32_t	current_philo_id;
-	int16_t		err;
-}			t_process_data;
 
 /* Input processing functions */
 
 u_int32_t	ft_atou32(char *str, int16_t *err);
-int16_t		process_input(t_process_data *p_data, int argc, char **argv);
+int16_t		process_input(t_sim_info *sim, int argc, char **argv, int16_t *error);
 
 /* Initilialization utilities */
 
-int16_t		init_variable(t_process_data *p_data);
+int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
 
 /* Actions utilities */
 
-int16_t		philo_take_fork(t_process_data *p_data, u_int32_t index);
-int16_t		philo_eat(t_process_data *p_data, u_int32_t index);
-int16_t		philo_sleep(t_process_data *p_data, u_int32_t index);
-int16_t		philo_think(t_process_data *p_data, u_int32_t index);
+int16_t		philo_take_fork(t_philo *philo, u_int32_t index);
+int16_t		philo_eat(t_philo *philo, u_int32_t index);
+int16_t		philo_sleep(t_philo *philo, u_int32_t index);
+int16_t		philo_think(t_philo *philo, u_int32_t index);
 
 /* Cleaning utilities */
 
-void		clean_philos(t_philo *philos, u_int32_t current_index);
+void	clean_philos(t_philo *top);
 
 /* Time utils */
 

@@ -1,4 +1,5 @@
-#include "../includes/philo.h"
+// #include "../includes/philo.h"
+#include <stdbool.h>
 
 /* void	*thread_subroutine(void *arg)
 {
@@ -40,18 +41,20 @@ int	main(int argc, char **argv)
 	pthread_join(thread_id[0], NULL);
 	pthread_join(thread_id[1], NULL);
 } */
+#include <stdint.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <stdio.h>
 
-int64_t	extract_time(u_int32_t *milli_start_time, u_int32_t *micro_start_time)
+long long	extract_time(int *milli_start_time, int *micro_start_time)
 {
 	struct timeval	tmp;
 	int				err;
 
 	err = gettimeofday(&tmp, NULL);
-	if (err < 0)
-		return (ERROR_IN_GETTING_TIME);
 	*milli_start_time = tmp.tv_usec * 1000;
 	*micro_start_time = tmp.tv_usec;
-	return (NONE);
+	return (err);
 }
 
 int main(int argc, char **argv)
@@ -65,10 +68,13 @@ int main(int argc, char **argv)
 	if (err < 0)
 		return (1);
 	printf("%u\n", ret); */
-	u_int32_t timo;
-	u_int32_t timo2;
+	int timo;
+	int timo2;
 
-	extract_time(&timo, &timo2);
-	printf("%u\n", timo);
-	printf("%u\n", timo2);
+	while (true)
+	{
+		extract_time(&timo, &timo2);
+		// printf("%u\n", timo);
+		printf("%d\n", timo2);
+	}
 }
