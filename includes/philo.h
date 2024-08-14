@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/11 19:05:33 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:21:43 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <sys/time.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /* General utilities macros */
 
@@ -26,6 +27,7 @@
 # define FAILURE -1
 # define NONE -98
 # define UNSPECIFIED -99
+# define DIED -100
 
 /* Error Macros */
 
@@ -64,7 +66,7 @@ typedef struct s_sim_info
 typedef struct s_philo
 {
 	pthread_t		ptid;
-	pthread_mutex_t	*fork_lock;
+	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
 	int64_t			eating_counter;
 	u_int32_t		last_time_ate;
 }			t_philo;
@@ -73,10 +75,9 @@ typedef struct s_philo
 
 typedef struct s_process_data
 {
-	t_philo		*philos;
+	t_philo		*philos; // a malloc
 	t_sim_info	current_simulation;
 	u_int32_t	current_philo_id;
-	bool		*end_mark;
 	int16_t		err;
 }			t_process_data;
 
@@ -91,11 +92,18 @@ int16_t		init_variable(t_process_data *p_data);
 
 /* Actions utilities */
 
+int16_t		philo_take_fork(t_process_data *p_data, u_int32_t index);
+int16_t		philo_eat(t_process_data *p_data, u_int32_t index);
+int16_t		philo_sleep(t_process_data *p_data, u_int32_t index);
+int16_t		philo_think(t_process_data *p_data, u_int32_t index);
 
 /* Cleaning utilities */
 
 void		clean_philos(t_philo *philos, u_int32_t current_index);
-void		clean_end_mark(bool *end_mark);
+
+/* Time utils */
+
+int64_t		extract_time(u_int32_t *start_time);
 
 /* Error printing function */
 void		print_error(int16_t err);

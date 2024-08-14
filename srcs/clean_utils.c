@@ -6,16 +6,11 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:15:15 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/11 12:20:58 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:40:15 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-void	clean_end_mark(bool *end_mark)
-{
-	free(end_mark);
-}
 
 void	clean_philos(t_philo *philos, u_int32_t current_index) // frees fork locks and the array of philos
 {

@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 15:27:04 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/08 18:16:44 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 14:31:27 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ int16_t	process_input(t_process_data *p_data, int argc, char **argv)
 		p_data->SIM_NUM_OF_TIMES_TO_EAT = UNSPECIFIED;
 	if (p_data->err != NONE)
 		return (p_data->err);
-	return (SUCCESS);
+	return (NONE);
 }

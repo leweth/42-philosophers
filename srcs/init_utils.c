@@ -6,25 +6,11 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/11 16:26:41 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/14 15:22:15 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
-
-static int16_t	init_end_mark(t_process_data *p_data)
-{
-	u_int32_t	i;
-
-	p_data->end_mark = (bool *) malloc(sizeof(bool) * p_data->SIM_NUM_OF_PHILOS);
-	if (p_data->end_mark)
-		return (clean_philos(p_data->philos, p_data->SIM_NUM_OF_PHILOS), 
-			p_data->err = FAILED_MALLOC_ERR, p_data->err);
-	i = 0;
-	while (i < p_data->SIM_NUM_OF_PHILOS)
-		p_data->end_mark[i++] = false;
-	return (NONE);
-}
 
 int16_t	init_variable(t_process_data *p_data)
 {
@@ -47,9 +33,6 @@ int16_t	init_variable(t_process_data *p_data)
 		p_data->philos[i].eating_counter = 0;
 		i++;
 	}
-	init_end_mark(p_data);
-	if (p_data->err != NONE)
-		return (p_data->err);
 	p_data->current_philo_id = 1;
 	return (NONE);
 }
