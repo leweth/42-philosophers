@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 14:25:57 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 17:48:48 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILO_H
 
 #include <pthread.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/time.h>
@@ -46,20 +47,21 @@
 # define SIM_TIME_TO_SLEEP current_simulation->time_to_sleep
 # define SIM_NUM_OF_TIMES_TO_EAT current_simulation->num_of_times_to_eat
 # define SIM_STOP current_simulation->stop_simulation
+# define SIM_STOP_LOCK current_simulation->stop_lock
 # define SIM_START_TIME current_simulation->start_time
-# define PHILO_INDEX_CHECK (index + 1) * !(index == p_data->SIM_NUM_OF_PHILOS)
 
 /* Information about the current simulation */
 
 typedef struct s_sim_info
 {
-	u_int32_t	num_of_philos;
-	u_int32_t	time_to_die;
-	u_int32_t	time_to_eat;
-	u_int32_t	time_to_sleep;
-	int64_t		num_of_times_to_eat; // should be initialized to UNSPECIFIED
-	bool		stop_simulation;
-	u_int32_t	start_time;
+	u_int32_t		num_of_philos;
+	u_int32_t		time_to_die;
+	u_int32_t		time_to_eat;
+	u_int32_t		time_to_sleep;
+	int64_t			num_of_times_to_eat; // should be initialized to UNSPECIFIED
+	bool			stop_simulation;
+	pthread_mutex_t	*stop_lock;
+	size_t			start_time;
 }			t_sim_info;
 
 /* Infomration about the philosopher */
@@ -70,11 +72,9 @@ typedef struct s_philo
 	pthread_t		ptid;
 	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
 	int64_t			eating_counter;
-	u_int32_t		last_time_ate;
+	size_t			last_time_ate;
 	t_sim_info		*current_simulation;
 	int16_t			*err;
-	bool			died;
-	pthread_mutex_t	*death_lock;
 	struct s_philo	*next;
 }			t_philo;
 
@@ -100,7 +100,7 @@ void		clean_philos(t_philo *top);
 
 /* Time utils */
 
-int64_t		extract_time(u_int32_t *start_time);
+int64_t		extract_time(size_t *start_time);
 
 /* Error printing function */
 void		print_error(int16_t err);
