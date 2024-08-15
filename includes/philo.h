@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 17:48:48 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 19:59:16 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ void		clean_philos(t_philo *top);
 
 /* Time utils */
 
+void		millisleep(size_t msecs);
 int64_t		extract_time(size_t *start_time);
 
 /* Error printing function */

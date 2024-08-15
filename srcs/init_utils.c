@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 16:03:14 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 19:37:46 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 	philo = (t_philo *) malloc(sizeof(t_philo));
 	if (!philo)
 		return (*error = FAILED_MALLOC_ERR, NULL);
+	memset(philo, 0, sizeof(t_philo));
 	(philo)->id = id + 1;
 	(philo)->fork_lock = 
 		(pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));

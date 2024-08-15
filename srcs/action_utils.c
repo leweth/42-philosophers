@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:32:14 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 18:40:51 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 19:59:55 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int16_t	philo_sleep(t_philo *philo, u_int32_t index)
 	if (err != NONE)
 		return (err);
 	elapsed_time = current_time - philo->SIM_START_TIME;
-	usleep(philo->SIM_TIME_TO_SLEEP * 1000);
+	millisleep(philo->SIM_TIME_TO_SLEEP);
 	printf("%zu %u is sleeping\n", elapsed_time, index);
 	return (NONE);
 }
