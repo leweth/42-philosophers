@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 17:56:13 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/08 18:09:24 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 13:05:35 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,4 +20,7 @@ void	print_error(int16_t err)
 		printf("Invaid number format\n");
 	else if (err == NUMBER_LIMIT_EXCEEDED)
 		printf("The number limit was exceeded\n");
+	else if (err == IMPOSSIBLE_TO_EAT_IN_TIME_FRAME)
+		printf("Impossible for the philosophers to eat within \
+the given timeframe.\n");
 }

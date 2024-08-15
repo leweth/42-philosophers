@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 19:52:31 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:30:01 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 	philo->last_time_ate = 0;
 	philo->err = error;
 	philo->died = false;
+	philo->death_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t *));
+	pthread_mutex_init(philo->death_lock, NULL);
   	return (philo);
 }
 

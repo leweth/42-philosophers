@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:36:19 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 20:41:36 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:45:45 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,26 @@ void	*simulate_sequence(void *data)
 	int16_t			err;
 
 	philo = (t_philo *) data;
-	usleep((philo->id - 1) * 10);
+	usleep((philo->id - 1) * 1000);
 	while (true)
 	{
 		if (philo->SIM_STOP == true)
 			break ;
-		err = philo_sleep(philo, philo->id);
 		pthread_mutex_lock(philo->fork_lock);
 		pthread_mutex_lock((philo->next)->fork_lock);
 		philo_take_fork(philo, philo->id);
 		err = philo_eat(philo, philo->id);
+		pthread_mutex_lock(philo->death_lock);
+		printf("%u - %d\n", philo->id, philo->died);
 		if (philo->died == true)
 			break ;
-		err = philo_think(philo, philo->id);
+		pthread_mutex_unlock(philo->death_lock);
+		err = philo_sleep(philo, philo->id);
 		philo->eating_counter++;
+		err = philo_think(philo, philo->id);
 		pthread_mutex_unlock((philo->next)->fork_lock);
 		pthread_mutex_unlock(philo->fork_lock);
-		// error handling for later time
+		// error handling for later timeof err
 		if (philo->SIM_NUM_OF_TIMES_TO_EAT != UNSPECIFIED
 			&& philo->eating_counter == philo->SIM_NUM_OF_TIMES_TO_EAT)
 			break ;
@@ -82,6 +85,38 @@ int main(int argc, char **argv)
 		pthread_create(&(pass->ptid), NULL, simulate_sequence, pass); // has assosciated resources
 		pass = pass->next;
 		i++;
+	}
+	while (true) // this functionality can't be really tested in case of a deadlock, so it is pushed back for now
+	{
+		bool	flag;
+
+		flag = false;
+		t_philo	*pass;
+		pass = philo;
+		while (true)
+		{
+			pthread_mutex_lock(pass->death_lock);
+			if (pass->died == true)
+			{
+				flag = true;
+				break ;
+			}
+			pthread_mutex_unlock(pass->death_lock);
+			pass = pass->next;
+		}
+		pass = philo;
+		i = 0;
+		if (flag == true)
+		{
+			while (i < sim.num_of_philos)
+			{
+				pthread_mutex_lock(pass->death_lock);
+				pass->died = true;
+				pthread_mutex_unlock(pass->death_lock);
+				pass = pass->next;
+				i++;
+			}
+		}
 	}
 	pass = philo;
 	i = 0;

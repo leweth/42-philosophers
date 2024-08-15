@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:32:14 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 19:38:16 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:30:43 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,13 @@ int16_t	philo_eat(t_philo *philo, u_int32_t index)
 		return (err);
 	elapsed_time = current_time - philo->SIM_START_TIME;
 	if (current_time - philo->last_time_ate > philo->SIM_TIME_TO_DIE)
-		return (philo->died = true, printf("%u %u died\n", elapsed_time, index), DIED);
+	{
+		pthread_mutex_lock(philo->death_lock);
+		philo->died = true;
+		pthread_mutex_unlock(philo->death_lock);
+		printf("%u %u died\n", elapsed_time, index);
+		return (DIED);
+	}
 	else
 		{
 			philo->last_time_ate = elapsed_time;

@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/14 19:50:02 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:25:57 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 
 /* Error Macros */
 
+# define IMPOSSIBLE_TO_EAT_IN_TIME_FRAME -10
 # define INVALID_NUMBER_OF_ARGS -11
 # define INVALID_NUMBER_FORMAT -12
 # define NUMBER_LIMIT_EXCEEDED -13
@@ -73,6 +74,7 @@ typedef struct s_philo
 	t_sim_info		*current_simulation;
 	int16_t			*err;
 	bool			died;
+	pthread_mutex_t	*death_lock;
 	struct s_philo	*next;
 }			t_philo;
 
@@ -94,7 +96,7 @@ int16_t		philo_think(t_philo *philo, u_int32_t index);
 
 /* Cleaning utilities */
 
-void	clean_philos(t_philo *top);
+void		clean_philos(t_philo *top);
 
 /* Time utils */
 
