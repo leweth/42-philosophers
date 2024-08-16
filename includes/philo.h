@@ -78,6 +78,10 @@ typedef struct s_philo
 	struct s_philo	*next;
 }			t_philo;
 
+/* Actions function prototype defined */
+
+typedef int16_t (*philo_action)(t_philo *, u_int32_t);
+
 /* Input processing functions */
 
 u_int32_t	ft_atou32(char *str, int16_t *err);

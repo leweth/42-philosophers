@@ -20,7 +20,7 @@ int64_t	extract_time(size_t *start_time)
 	err = gettimeofday(&tmp, NULL);
 	if (err < 0)
 		return (ERROR_IN_GETTING_TIME);
-	*start_time = (tmp.tv_sec * 1000) + (tmp.tv_usec) / 1000;
+	*start_time = (tmp.tv_sec * 1000) + (tmp.tv_usec / 1000);
 	return (NONE);
 }
 

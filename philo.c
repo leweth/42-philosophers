@@ -17,6 +17,17 @@
 	system("leaks -q philo");
 } */
 
+// int16_t	switch_execution(t_philo *philo, bool flag)
+// {
+// 	int16_t	err;
+
+// 	if (flag == 1)
+// 		err = philo_think(philo, philo->id);
+// 	else if (flag == 0)
+// 		err = philo_sleep(philo, philo->id);
+// 	return (err);
+// }
+
 void	*simulate_sequence(void *data)
 {
 	t_philo			*philo;
@@ -25,7 +36,6 @@ void	*simulate_sequence(void *data)
 
 	flag = false;
 	philo = (t_philo *) data;
-	usleep((philo->id - 1) * 100);
 	//  = philo->SIM_START_TIME;
 	extract_time(&philo->last_time_ate);
 	printf("ID: %u - Checking this out quite early: (%zu)\n", philo->id, philo->last_time_ate);
@@ -37,7 +47,10 @@ void	*simulate_sequence(void *data)
 		pthread_mutex_unlock(philo->SIM_STOP_LOCK); // --
 		if (flag)
 			break ;
+		if (philo->id % 2 == 0)
+			err = philo_sleep(philo, philo->id);
 		err = philo_think(philo, philo->id);
+		// err = switch_execution(philo, philo->id % 2);
 		pthread_mutex_lock(philo->fork_lock); // **
 		pthread_mutex_lock((philo->next)->fork_lock); // ==
 		philo_take_fork(philo, philo->id);
@@ -46,11 +59,14 @@ void	*simulate_sequence(void *data)
 		philo->eating_counter++;
 		pthread_mutex_unlock((philo->next)->fork_lock); // ==
 		pthread_mutex_unlock(philo->fork_lock); // ** 
-		err = philo_sleep(philo, philo->id);
+		if (philo->id % 2 == 1)
+			err = philo_sleep(philo, philo->id);
+		// err = switch_execution(philo, !(philo->id % 2));
 		if (philo->SIM_NUM_OF_TIMES_TO_EAT != UNSPECIFIED
 			&& philo->eating_counter == philo->SIM_NUM_OF_TIMES_TO_EAT)
 			break ;
 	}
+	(void) err;
 	return (NULL);
 }
 
