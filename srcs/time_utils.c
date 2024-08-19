@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:54:28 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 18:56:16 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:42:33 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,7 @@ void	millisleep(t_sim_info sim, size_t msecs)
 	goal_time = (current_time + msecs) * 1000;
 	while (current_time * 1000 < goal_time)
 	{
-		pthread_mutex_lock(sim.stop_lock);
-		if (sim.stop_simulation == true)
-			flag = true;
-		pthread_mutex_unlock(sim.stop_lock);
-		if (flag == true)
+		if (should_stop(&sim))
 			break ;
 		usleep(200);
 		extract_time(&current_time);

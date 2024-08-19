@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 18:58:53 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:44:27 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_sim_info
 	u_int32_t		time_to_eat;
 	u_int32_t		time_to_sleep;
 	int64_t			num_of_times_to_eat; // should be initialized to UNSPECIFIED
-	bool			stop_simulation;
+	bool			stop;
 	pthread_mutex_t	*stop_lock;
 	size_t			start_time;
 	// pthread_mutex_t	*printf_lock;
@@ -87,6 +87,11 @@ int16_t		process_input(t_sim_info *sim, int argc, char **argv, int16_t *error);
 /* Initilialization utilities */
 
 int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
+
+/* Simulation Management Utilities */
+
+void		stop_simulation(t_sim_info *sim);
+bool		should_stop(t_sim_info *sim);
 
 /* Actions utilities */
 

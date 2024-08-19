@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 18:59:00 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:41:23 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int16_t	init_variable(t_philo **philo, t_sim_info *sim, int16_t *error)
 	t_philo		*tmp;
 	u_int32_t	i;
 
-	sim->stop_simulation = false;
+	sim->stop = false;
 	sim->stop_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t *));
 	pthread_mutex_init(sim->stop_lock, NULL);
 	// sim->printf_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t *));

@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:36:19 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 19:00:25 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 22:47:50 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,18 @@
 	system("leaks -q philo");
 } */
 
-bool	should_stop(t_sim_info *sim)
-{
-	bool	flag;
-
-	flag = false;
-	pthread_mutex_lock(sim->stop_lock);
-	if (sim->stop_simulation == true)
-		flag = true;
-	pthread_mutex_unlock(sim->stop_lock);
-	return (flag);
-}
-
 void	*simulate_sequence(void *data)
 {
-	t_philo			*philo;
-	int16_t			err;
-	bool			flag;
+	t_philo	*philo;
+	int16_t	err;
+	bool	flag;
 
 	flag = false;
 	philo = (t_philo *) data;
 	extract_time(&philo->last_time_ate);
 	while (true)
 	{
-		pthread_mutex_lock(philo->c_sim->stop_lock); // --
-		if (philo->c_sim->stop_simulation == true)
-			flag = true ;
-		pthread_mutex_unlock(philo->c_sim->stop_lock); // --
-		if (flag)
+		if (should_stop(philo->c_sim))
 			break ;
 		if (philo->id % 2 == 0)
 			err = philo_sleep(philo, philo->id);
@@ -60,11 +44,7 @@ void	*simulate_sequence(void *data)
 			err = philo_sleep(philo, philo->id);
 		if (philo->c_sim->num_of_times_to_eat != UNSPECIFIED
 			&& philo->eating_counter == philo->c_sim->num_of_times_to_eat)
-		{
-			pthread_mutex_lock(philo->c_sim->stop_lock);
-			philo->c_sim->stop_simulation = true;
-			pthread_mutex_unlock(philo->c_sim->stop_lock);
-		}
+				stop_simulation(philo->c_sim);
 	}
 	(void) err;
 	return (NULL);
@@ -77,10 +57,8 @@ int main(int argc, char **argv)
 	int16_t		error;
 	t_sim_info	sim;
 	u_int32_t	i;
-	bool		flag;
 
 	// atexit(check_leaks);
-	memset(&sim, 0, sizeof(t_sim_info));
 	process_input(&sim, argc, argv, &error);
 	if (error != NONE)
 		return (print_error(error), FAILURE);
@@ -96,14 +74,9 @@ int main(int argc, char **argv)
 		pass = pass->next;
 		i++;
 	}
-	flag = false;
 	while (true)
 	{
-		pthread_mutex_lock(philo->c_sim->stop_lock);
-		if (philo->c_sim->stop_simulation == true)
-			flag = true;
-		pthread_mutex_unlock(philo->c_sim->stop_lock);
-		if (flag == true)
+		if (should_stop(&sim))
 			break ;
 	}
 	i = 0;
