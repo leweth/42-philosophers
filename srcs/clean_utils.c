@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:15:15 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 18:44:47 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 15:45:37 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	clean_philos(t_philo *top) // frees fork locks and the array of philos
 
 	i = 0;
 	pass = top;
-	pthread_mutex_destroy(top->SIM_STOP_LOCK);
-	free(top->SIM_STOP_LOCK);
-	sim = top->current_simulation;
+	pthread_mutex_destroy(top->c_sim->stop_lock);
+	free(top->c_sim->stop_lock);
+	sim = top->c_sim;
 	while (i < sim->num_of_philos)
 	{
 		tmp = pass->next;

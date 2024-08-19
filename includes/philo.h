@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 19:59:16 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:58:53 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@
 
 /* Syntax beauty macros */
 
-# define SIM_NUM_OF_PHILOS current_simulation->num_of_philos
-# define SIM_TIME_TO_DIE current_simulation->time_to_die
-# define SIM_TIME_TO_EAT current_simulation->time_to_eat
-# define SIM_TIME_TO_SLEEP current_simulation->time_to_sleep
-# define SIM_NUM_OF_TIMES_TO_EAT current_simulation->num_of_times_to_eat
-# define SIM_STOP current_simulation->stop_simulation
-# define SIM_STOP_LOCK current_simulation->stop_lock
-# define SIM_START_TIME current_simulation->start_time
+# define SIM_NUM_OF_PHILOS c_sim->num_of_philos
+# define SIM_TIME_TO_DIE c_sim->time_to_die
+# define SIM_TIME_TO_EAT c_sim->time_to_eat
+# define SIM_TIME_TO_SLEEP c_sim->time_to_sleep
+# define SIM_NUM_OF_TIMES_TO_EAT c_sim->num_of_times_to_eat
+# define SIM_STOP c_sim->stop_simulation
+# define SIM_STOP_LOCK c_sim->stop_lock
+# define SIM_START_TIME c_sim->start_time
 
 /* Information about the current simulation */
 
@@ -62,6 +62,7 @@ typedef struct s_sim_info
 	bool			stop_simulation;
 	pthread_mutex_t	*stop_lock;
 	size_t			start_time;
+	// pthread_mutex_t	*printf_lock;
 }			t_sim_info;
 
 /* Infomration about the philosopher */
@@ -73,14 +74,10 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
 	int64_t			eating_counter;
 	size_t			last_time_ate;
-	t_sim_info		*current_simulation;
+	t_sim_info		*c_sim;
 	int16_t			*err;
 	struct s_philo	*next;
 }			t_philo;
-
-/* Actions function prototype defined */
-
-typedef int16_t (*philo_action)(t_philo *, u_int32_t);
 
 /* Input processing functions */
 
@@ -93,6 +90,7 @@ int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
 
 /* Actions utilities */
 
+bool		should_stop(t_sim_info *sim);
 int16_t		philo_take_fork(t_philo *philo, u_int32_t index);
 int16_t		philo_eat(t_philo *philo, u_int32_t index);
 int16_t		philo_sleep(t_philo *philo, u_int32_t index);
@@ -104,7 +102,7 @@ void		clean_philos(t_philo *top);
 
 /* Time utils */
 
-void		millisleep(size_t msecs);
+void		millisleep(t_sim_info sim, size_t msecs);
 int64_t		extract_time(size_t *start_time);
 
 /* Error printing function */

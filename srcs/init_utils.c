@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 19:37:46 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/19 18:59:00 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 		return (clean_philos(philo), *error = FAILED_MALLOC_ERR, NULL);
 	pthread_mutex_init(philo->fork_lock, NULL); // what do they mean by initilize it? // you should dstroy this at the end
 	philo->eating_counter = 0;
-	philo->current_simulation = sim;
+	philo->c_sim = sim;
 	philo->err = error;
   	return (philo);
 }
@@ -40,6 +40,8 @@ int16_t	init_variable(t_philo **philo, t_sim_info *sim, int16_t *error)
 	sim->stop_simulation = false;
 	sim->stop_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t *));
 	pthread_mutex_init(sim->stop_lock, NULL);
+	// sim->printf_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t *));
+	// pthread_mutex_init(sim->printf_lock, NULL);
 	*philo = new_philo(0, sim, error);
 	if (*error != NONE)
 		return (*error);
