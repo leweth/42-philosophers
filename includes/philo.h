@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 22:44:27 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:43:51 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
 	int64_t			eating_counter;
 	size_t			last_time_ate;
+	pthread_mutex_t	*la_lock;
 	t_sim_info		*c_sim;
 	int16_t			*err;
 	struct s_philo	*next;
@@ -90,7 +91,7 @@ int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
 
 /* Simulation Management Utilities */
 
-void		stop_simulation(t_sim_info *sim);
+void		set_stop(t_sim_info *sim);
 bool		should_stop(t_sim_info *sim);
 
 /* Actions utilities */

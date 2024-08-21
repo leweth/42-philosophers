@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 22:41:23 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/21 18:45:57 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 	if (!philo->fork_lock)
 		return (clean_philos(philo), *error = FAILED_MALLOC_ERR, NULL);
 	pthread_mutex_init(philo->fork_lock, NULL); // what do they mean by initilize it? // you should dstroy this at the end
+	philo->la_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t *));
+	if (!philo->la_lock)
+		return (clean_philos(philo), *error = FAILED_MALLOC_ERR, NULL);
+	pthread_mutex_init(philo->la_lock, NULL);
 	philo->eating_counter = 0;
 	philo->c_sim = sim;
 	philo->err = error;
