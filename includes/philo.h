@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 18:19:17 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/23 22:17:42 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct s_sim_info
 	bool			stop;
 	pthread_mutex_t	*stop_lock;
 	size_t			start_time;
-	// pthread_mutex_t	*printf_lock;
+	pthread_mutex_t	*printf_lock;
 }			t_sim_info;
 
 /* Infomration about the philosopher */
@@ -74,7 +74,7 @@ typedef struct s_philo
 	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
 	int64_t			eating_counter;
 	size_t			last_time_ate;
-	// pthread_mutex_t	*la_lock;
+	pthread_mutex_t	*la_lock;
 	t_sim_info		*c_sim;
 	int16_t			*err;
 	struct s_philo	*next;
