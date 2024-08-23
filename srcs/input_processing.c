@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 15:27:04 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/15 18:10:59 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/23 20:52:08 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ int16_t	process_input(t_sim_info *sim, int argc, char **argv, int16_t *error)
 	sim->time_to_die = ft_atou32(argv[2], error);
 	sim->time_to_eat = ft_atou32(argv[3], error);
 	sim->time_to_sleep = ft_atou32(argv[4], error);
-	// extract_time(&sim->start_time);
 	if (*error != NONE)
 		return (*error);
 	if (argc == 6)

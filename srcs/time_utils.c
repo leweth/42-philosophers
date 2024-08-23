@@ -6,21 +6,22 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:54:28 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 22:42:33 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/23 20:51:01 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int64_t	extract_time(size_t *start_time)
+int64_t	extract_time(size_t *ctime)
 {
 	struct timeval	tmp;
 	int				err;
 
+	memset(&tmp, 0, sizeof(struct timeval));
 	err = gettimeofday(&tmp, NULL);
 	if (err < 0)
 		return (ERROR_IN_GETTING_TIME);
-	*start_time = (tmp.tv_sec * 1000) + (tmp.tv_usec / 1000);
+	*ctime = (tmp.tv_sec * 1000) + (tmp.tv_usec / 1000);
 	return (NONE);
 }
 
@@ -31,6 +32,7 @@ void	millisleep(t_sim_info sim, size_t msecs)
 	bool	flag;
 
 	flag = false;
+	current_time = 0;
 	extract_time(&current_time);
 	goal_time = (current_time + msecs) * 1000;
 	while (current_time * 1000 < goal_time)
