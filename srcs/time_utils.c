@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:54:28 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 20:51:01 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/23 22:33:54 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ void	millisleep(t_sim_info sim, size_t msecs)
 {
 	size_t	current_time;
 	size_t	goal_time;
-	bool	flag;
 
-	flag = false;
 	current_time = 0;
 	extract_time(&current_time);
 	goal_time = (current_time + msecs) * 1000;

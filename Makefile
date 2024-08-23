@@ -14,7 +14,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "\033[1;33mBuilding Target...\033[0m"
-	${CC} ${CFLAGS} -lpthread $(OBJS) -o ${NAME}
+	${CC} ${CFLAGS} $(OBJS) -o ${NAME} -lpthread 
 	@echo "\033[1;32mTarget Built Successfully!\033[0m"
 
 %.o: %.c includes/philo.h
