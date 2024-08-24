@@ -30,3 +30,8 @@ bool	should_stop(t_sim_info *sim)
 	pthread_mutex_unlock(sim->stop_lock);
 	return (flag);
 }
+
+void	safe_access(void *data, pthread_mutex_t *lock)
+{
+
+}

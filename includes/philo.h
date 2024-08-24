@@ -39,17 +39,6 @@
 # define FAILED_MALLOC_ERR -14
 # define ERROR_IN_GETTING_TIME -15
 
-/* Syntax beauty macros */
-
-# define SIM_NUM_OF_PHILOS c_sim->num_of_philos
-# define SIM_TIME_TO_DIE c_sim->time_to_die
-# define SIM_TIME_TO_EAT c_sim->time_to_eat
-# define SIM_TIME_TO_SLEEP c_sim->time_to_sleep
-# define SIM_NUM_OF_TIMES_TO_EAT c_sim->num_of_times_to_eat
-# define SIM_STOP c_sim->stop_simulation
-# define SIM_STOP_LOCK c_sim->stop_lock
-# define SIM_START_TIME c_sim->start_time
-
 /* Information about the current simulation */
 
 typedef struct s_sim_info

@@ -23,7 +23,7 @@ void	*simulate_sequence(void *data)
 	int16_t	err;
 
 	philo = (t_philo *) data;
-	usleep(10);
+	// usleep(10);
 	pthread_mutex_lock(philo->la_lock);
 	extract_time(&philo->last_time_ate);
 	pthread_mutex_unlock(philo->la_lock);
@@ -31,8 +31,8 @@ void	*simulate_sequence(void *data)
 	{
 		if (should_stop(philo->c_sim))
 			break ;
-		// if (philo->id % 2 == 0)
-		// 	err = philo_sleep(philo, philo->id);
+		if (philo->id % 2 == 0)
+			err = philo_sleep(philo, philo->id);
 		err = philo_think(philo, philo->id);
 		pthread_mutex_lock(philo->fork_lock); // **
 		pthread_mutex_lock((philo->next)->fork_lock); // ==
@@ -41,13 +41,13 @@ void	*simulate_sequence(void *data)
 		philo->eating_counter++;
 		pthread_mutex_unlock((philo->next)->fork_lock); // ==
 		pthread_mutex_unlock(philo->fork_lock); // ** 
-		if (philo->id % 2 == 1)
+		if (philo->id % 2 == 0)
 			err = philo_sleep(philo, philo->id);
-		if (philo->c_sim->num_of_times_to_eat != UNSPECIFIED
+		if ((philo->c_sim->num_of_times_to_eat != UNSPECIFIED
 			&& philo->eating_counter == philo->c_sim->num_of_times_to_eat)
+			|| err != NONE)
 				set_stop(philo->c_sim);
 	}
-	(void) err;
 	return (NULL);
 }
 

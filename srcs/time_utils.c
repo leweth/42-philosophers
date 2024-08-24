@@ -25,6 +25,11 @@ int64_t	extract_time(size_t *ctime)
 	return (NONE);
 }
 
+void	safe_extract(size_t *ctime, pthread_mutex_t *lock)
+{
+
+}
+
 void	millisleep(t_sim_info sim, size_t msecs)
 {
 	size_t	current_time;
