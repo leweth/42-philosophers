@@ -20,32 +20,27 @@
 void	*simulate_sequence(void *data)
 {
 	t_philo	*philo;
-	int16_t	err;
 
 	philo = (t_philo *) data;
-	// usleep(10);
-	pthread_mutex_lock(philo->la_lock);
-	extract_time(&philo->last_time_ate);
-	pthread_mutex_unlock(philo->la_lock);
+	safe_extract(&philo->last_time_ate, philo->la_lock);
 	while (true)
 	{
 		if (should_stop(philo->c_sim))
 			break ;
 		if (philo->id % 2 == 0)
-			err = philo_sleep(philo, philo->id);
-		err = philo_think(philo, philo->id);
+			philo_sleep(philo);
+		philo_think(philo);
 		pthread_mutex_lock(philo->fork_lock); // **
 		pthread_mutex_lock((philo->next)->fork_lock); // ==
-		philo_take_fork(philo, philo->id);
-		err = philo_eat(philo, philo->id);
+		philo_take_fork(philo);
+		philo_eat(philo);
 		philo->eating_counter++;
 		pthread_mutex_unlock((philo->next)->fork_lock); // ==
 		pthread_mutex_unlock(philo->fork_lock); // ** 
 		if (philo->id % 2 == 0)
-			err = philo_sleep(philo, philo->id);
+			philo_sleep(philo);
 		if ((philo->c_sim->num_of_times_to_eat != UNSPECIFIED
-			&& philo->eating_counter == philo->c_sim->num_of_times_to_eat)
-			|| err != NONE)
+			&& philo->eating_counter == philo->c_sim->num_of_times_to_eat))
 				set_stop(philo->c_sim);
 	}
 	return (NULL);
@@ -66,9 +61,7 @@ size_t	elapsed_time;
 		{
 			set_stop(pass->c_sim);
 			elapsed_time = current_time - philo->c_sim->start_time;
-			pthread_mutex_lock(philo->c_sim->printf_lock);
-			printf("%zu %u died\n", elapsed_time, pass->id);
-			pthread_mutex_unlock(philo->c_sim->printf_lock);
+			safe_message(philo, "died", elapsed_time);
 		}
 		pthread_mutex_unlock(pass->la_lock);
 		if (should_stop(philo->c_sim))
@@ -81,19 +74,18 @@ int main(int argc, char **argv)
 {
 	t_philo		*philo;
 	t_philo		*pass;
-	int16_t		error;
+	t_error		error;
 	t_sim_info	sim;
 	u_int32_t	i;
 
 	// atexit(check_leaks);
-	memset(&sim, 0, sizeof(t_sim_info));
-	memset(&error, 0, sizeof(int16_t));
 	process_input(&sim, argc, argv, &error);
-	if (error != NONE)
-		return (print_error(error), FAILURE);
-	init_variable(&philo, &sim, &error);
-	if (error != NONE)
-		return (print_error(error), FAILURE);
+	if (error.err_code != NONE)
+		return (print_error(error.err_code), FAILURE);
+	init_variable(&philo, &sim, &(error.err_code));
+	philo->err = &error;
+	if (error.err_code != NONE)
+		return (print_error(error.err_code), FAILURE);
 	i = 0;
 	pass = philo;
 	extract_time(&sim.start_time);

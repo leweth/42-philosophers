@@ -31,7 +31,14 @@ bool	should_stop(t_sim_info *sim)
 	return (flag);
 }
 
-void	safe_access(void *data, pthread_mutex_t *lock)
+/* void	safe_access(void *data, pthread_mutex_t *lock)
 {
 
+} */
+
+void	safe_message(t_philo *philo, const char *str, size_t timestamp)
+{
+	pthread_mutex_lock(philo->la_lock);
+	printf("%zu %u %s\n", timestamp, philo->id, str);
+	pthread_mutex_unlock(philo->la_lock);
 }

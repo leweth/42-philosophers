@@ -27,7 +27,9 @@ int64_t	extract_time(size_t *ctime)
 
 void	safe_extract(size_t *ctime, pthread_mutex_t *lock)
 {
-
+	pthread_mutex_lock(lock);
+	extract_time(ctime);
+	pthread_mutex_unlock(lock);
 }
 
 void	millisleep(t_sim_info sim, size_t msecs)

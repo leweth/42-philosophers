@@ -32,7 +32,6 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 	pthread_mutex_init(philo->la_lock, NULL);
 	philo->eating_counter = 0;
 	philo->c_sim = sim;
-	philo->err = error;
   	return (philo);
 }
 

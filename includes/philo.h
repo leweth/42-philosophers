@@ -39,6 +39,14 @@
 # define FAILED_MALLOC_ERR -14
 # define ERROR_IN_GETTING_TIME -15
 
+/* Error Struct */
+
+typedef	struct s_error
+{
+	int16_t			err_code;
+	pthread_mutex_t	*err_lock;
+} 			t_error;
+
 /* Information about the current simulation */
 
 typedef struct s_sim_info
@@ -65,14 +73,14 @@ typedef struct s_philo
 	size_t			last_time_ate;
 	pthread_mutex_t	*la_lock;
 	t_sim_info		*c_sim;
-	int16_t			*err;
+	t_error			*err;
 	struct s_philo	*next;
 }			t_philo;
 
 /* Input processing functions */
 
 u_int32_t	ft_atou32(char *str, int16_t *err);
-int16_t		process_input(t_sim_info *sim, int argc, char **argv, int16_t *error);
+int16_t		process_input(t_sim_info *sim, int argc, char **argv, t_error *error);
 
 /* Initilialization utilities */
 
@@ -82,14 +90,15 @@ int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
 
 void		set_stop(t_sim_info *sim);
 bool		should_stop(t_sim_info *sim);
+void		safe_message(t_philo *philo, const char *str, size_t timestamp);
 
 /* Actions utilities */
 
 bool		should_stop(t_sim_info *sim);
-int16_t		philo_take_fork(t_philo *philo, u_int32_t index);
-int16_t		philo_eat(t_philo *philo, u_int32_t index);
-int16_t		philo_sleep(t_philo *philo, u_int32_t index);
-int16_t		philo_think(t_philo *philo, u_int32_t index);
+int16_t		philo_take_fork(t_philo *philo);
+int16_t		philo_eat(t_philo *philo);
+int16_t		philo_sleep(t_philo *philo);
+int16_t		philo_think(t_philo *philo);
 
 /* Cleaning utilities */
 
@@ -97,6 +106,7 @@ void		clean_philos(t_philo *top);
 
 /* Time utils */
 
+void		safe_extract(size_t *ctime, pthread_mutex_t *lock);
 void		millisleep(t_sim_info sim, size_t msecs);
 int64_t		extract_time(size_t *start_time);
 

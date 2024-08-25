@@ -12,22 +12,26 @@
 
 #include "../includes/philo.h"
 
-int16_t	process_input(t_sim_info *sim, int argc, char **argv, int16_t *error)
+int16_t	process_input(t_sim_info *sim, int argc, char **argv, t_error *error)
 {
+	memset(&sim, 0, sizeof(t_sim_info));
+	memset(&error, 0, sizeof(t_error));
+	error->err_lock = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(error->err_lock, NULL);
 	if (argc < 5 || argc > 6)
-		return (*error = INVALID_NUMBER_OF_ARGS, *error);
-	*error = NONE;
-	sim->num_of_philos= ft_atou32(argv[1], error);
-	sim->time_to_die = ft_atou32(argv[2], error);
-	sim->time_to_eat = ft_atou32(argv[3], error);
-	sim->time_to_sleep = ft_atou32(argv[4], error);
-	if (*error != NONE)
-		return (*error);
+		return (error->err_code = INVALID_NUMBER_OF_ARGS, error->err_code);
+	error->err_code = NONE;
+	sim->num_of_philos= ft_atou32(argv[1], &error->err_code);
+	sim->time_to_die = ft_atou32(argv[2], &error->err_code);
+	sim->time_to_eat = ft_atou32(argv[3], &error->err_code);
+	sim->time_to_sleep = ft_atou32(argv[4], &error->err_code);
+	if (error->err_code != NONE)
+		return (error->err_code);
 	if (argc == 6)
-		sim->num_of_times_to_eat = ft_atou32(argv[5], error);
+		sim->num_of_times_to_eat = ft_atou32(argv[5], &error->err_code);
 	else
 		sim->num_of_times_to_eat = UNSPECIFIED;
-	if (*error != NONE)
-		return (*error);
+	if (error->err_code != NONE)
+		return (error->err_code);
 	return (NONE);
 }
