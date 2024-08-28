@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 22:17:42 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:59:55 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,14 @@
 # define NUMBER_LIMIT_EXCEEDED -13
 # define FAILED_MALLOC_ERR -14
 # define ERROR_IN_GETTING_TIME -15
+
+/* Error struct */
+
+typedef	struct s_error
+{
+	int16_t			err_code;
+	pthread_mutex_t	*err_lock;
+} 			t_error;
 
 /* Information about the current simulation */
 
@@ -82,14 +90,15 @@ int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
 
 void		set_stop(t_sim_info *sim);
 bool		should_stop(t_sim_info *sim);
+void		safe_message(t_philo *philo, const char *str, size_t timestamp);
 
 /* Actions utilities */
 
 bool		should_stop(t_sim_info *sim);
-int16_t		philo_take_fork(t_philo *philo, u_int32_t index);
-int16_t		philo_eat(t_philo *philo, u_int32_t index);
-int16_t		philo_sleep(t_philo *philo, u_int32_t index);
-int16_t		philo_think(t_philo *philo, u_int32_t index);
+int16_t		philo_take_fork(t_philo *philo);
+int16_t		philo_eat(t_philo *philo);
+int16_t		philo_sleep(t_philo *philo);
+int16_t		philo_think(t_philo *philo);
 
 /* Cleaning utilities */
 
@@ -99,6 +108,7 @@ void		clean_philos(t_philo *top);
 
 void		millisleep(t_sim_info sim, size_t msecs);
 int64_t		extract_time(size_t *start_time);
+void		safe_extract(size_t *ctime, pthread_mutex_t *lock);
 
 /* Error printing function */
 void		print_error(int16_t err);

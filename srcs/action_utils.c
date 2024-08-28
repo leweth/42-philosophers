@@ -6,13 +6,13 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:32:14 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 22:24:42 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:54:50 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int16_t	philo_take_fork(t_philo *philo, u_int32_t index)
+int16_t	philo_take_fork(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -24,15 +24,11 @@ int16_t	philo_take_fork(t_philo *philo, u_int32_t index)
 		return (err);
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (!should_stop(philo->c_sim))
-	{
-		pthread_mutex_lock(philo->c_sim->printf_lock);
-		printf("%zu %u has taken a fork\n", elapsed_time, index);
-		pthread_mutex_unlock(philo->c_sim->printf_lock);
-	}
+		safe_message(philo, "has taken a fork", elapsed_time);
 	return (NONE);
 }
 
-int16_t	philo_eat(t_philo *philo, u_int32_t index)
+int16_t	philo_eat(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -45,18 +41,14 @@ int16_t	philo_eat(t_philo *philo, u_int32_t index)
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (!should_stop(philo->c_sim))
 	{
-		pthread_mutex_lock(philo->c_sim->printf_lock);
-		printf("%zu %u is eating\n", elapsed_time, index);
-		pthread_mutex_unlock(philo->c_sim->printf_lock);
-		pthread_mutex_lock(philo->la_lock);
-		extract_time(&philo->last_time_ate);
-		pthread_mutex_unlock(philo->la_lock);
+		safe_message(philo, "is eating", elapsed_time);
+		safe_extract(&philo->last_time_ate, philo->la_lock);
 		millisleep(*(philo->c_sim), philo->c_sim->time_to_eat);
 	}
 	return (NONE);
 }
 
-int16_t	philo_sleep(t_philo *philo, u_int32_t index)
+int16_t	philo_sleep(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -69,14 +61,12 @@ int16_t	philo_sleep(t_philo *philo, u_int32_t index)
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (should_stop(philo->c_sim))
 		return (NONE);
-	pthread_mutex_lock(philo->c_sim->printf_lock);
-	printf("%zu %u is sleeping\n", elapsed_time, index);
-	pthread_mutex_unlock(philo->c_sim->printf_lock);
+	safe_message(philo, "is sleeping", elapsed_time);
 	millisleep(*(philo->c_sim), philo->c_sim->time_to_sleep);
 	return (NONE);
 }
 
-int16_t	philo_think(t_philo *philo, u_int32_t index)
+int16_t	philo_think(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -88,10 +78,6 @@ int16_t	philo_think(t_philo *philo, u_int32_t index)
 		return (err);
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (!should_stop(philo->c_sim))
-	{
-		pthread_mutex_lock(philo->c_sim->printf_lock);
-		printf("%zu %u is thinking\n", elapsed_time, index);
-		pthread_mutex_unlock(philo->c_sim->printf_lock);
-	}
+		safe_message(philo, "is thinking", elapsed_time);
 	return (NONE);
 }
