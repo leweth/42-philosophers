@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:36:19 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 22:45:26 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:12:08 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	*simulate_sequence(void *data)
 	{
 		if (should_stop(philo->c_sim))
 			break ;
-		if (philo->id % 2 == 0)
-			err = philo_sleep(philo, philo->id);
 		err = philo_think(philo, philo->id);
+	if (philo->id % 2 == 0)
+		err = philo_sleep(philo, philo->id);
 		pthread_mutex_lock(philo->fork_lock); // **
 		pthread_mutex_lock((philo->next)->fork_lock); // ==
 		philo_take_fork(philo, philo->id);
@@ -41,7 +41,7 @@ void	*simulate_sequence(void *data)
 		philo->eating_counter++;
 		pthread_mutex_unlock((philo->next)->fork_lock); // ==
 		pthread_mutex_unlock(philo->fork_lock); // ** 
-		if (philo->id % 2 == 0)
+		if (philo->id % 2 == 1)
 			err = philo_sleep(philo, philo->id);
 		if ((philo->c_sim->num_of_times_to_eat != UNSPECIFIED
 			&& philo->eating_counter == philo->c_sim->num_of_times_to_eat)
@@ -58,6 +58,7 @@ size_t	current_time;
 size_t	elapsed_time;
 
 	pass = philo;
+	usleep(200);
 	while (true)
 	{
 		pthread_mutex_lock(pass->la_lock);

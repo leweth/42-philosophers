@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:54:28 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 22:33:54 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:06:56 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int64_t	extract_time(size_t *ctime)
 	return (NONE);
 }
 
-void	safe_extract(size_t *ctime, pthread_mutex_t *lock)
+/* void	safe_extract(size_t *ctime, pthread_mutex_t *lock)
 {
 
-}
+} */
 
 void	millisleep(t_sim_info sim, size_t msecs)
 {

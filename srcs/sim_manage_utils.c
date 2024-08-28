@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:40:47 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/21 22:44:09 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 10:07:15 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ bool	should_stop(t_sim_info *sim)
 	pthread_mutex_unlock(sim->stop_lock);
 	return (flag);
 }
-
+/* 
 void	safe_access(void *data, pthread_mutex_t *lock)
 {
 
-}
+} */
