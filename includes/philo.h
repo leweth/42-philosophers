@@ -6,21 +6,21 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 19:43:31 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:01:02 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <pthread.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <sys/time.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <unistd.h>
+# include <pthread.h>
+# include <string.h>
+# include <stdio.h>
+# include <stdbool.h>
+# include <sys/time.h>
+# include <stdint.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 /* General utilities macros */
 
@@ -42,6 +42,10 @@
 # define ERROR_IN_GETTING_TIME -15
 # define FAILED_MUTEX_INIT -16
 
+/* Syntax reduction macros */
+
+# define NUM_OF_TIMES_TO_EAT philo->c_sim->num_of_times_to_eat
+
 /* Error struct */
 
 typedef	struct s_error
@@ -58,7 +62,7 @@ typedef struct s_sim_info
 	u_int32_t		time_to_die;
 	u_int32_t		time_to_eat;
 	u_int32_t		time_to_sleep;
-	int64_t			num_of_times_to_eat; // should be initialized to UNSPECIFIED
+	int64_t			num_of_times_to_eat;
 	bool			stop;
 	pthread_mutex_t	*stop_lock;
 	size_t			start_time;
@@ -71,7 +75,7 @@ typedef struct s_philo
 {
 	u_int32_t		id;
 	pthread_t		ptid;
-	pthread_mutex_t	*fork_lock; // a malloc and has some associated resources on some implementations
+	pthread_mutex_t	*fork_lock;
 	int64_t			eating_counter;
 	size_t			last_time_ate;
 	pthread_mutex_t	*la_lock;
@@ -107,6 +111,14 @@ void		philo_take_fork(t_philo *philo);
 void		philo_eat(t_philo *philo);
 void		philo_sleep(t_philo *philo);
 void		philo_think(t_philo *philo);
+
+/* Simulation runtime utils */
+
+void		simulate_lone_philo(t_philo *philo);
+void		*simulate_sequence(void *data);
+bool		done_eating(t_philo *philo);
+void		observer(t_philo *philo);
+void		run_simulation(t_philo *philo);
 
 /* Cleaning utilities */
 
