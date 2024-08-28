@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 17:50:56 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:43:31 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # define NONE -98
 # define UNSPECIFIED -99
 # define DIED -100
+# define INT_DTYPE -101 
+# define BOOL_DTYPE -101 
 
 /* Error Macros */
 
@@ -38,6 +40,7 @@
 # define NUMBER_LIMIT_EXCEEDED -13
 # define FAILED_MALLOC_ERR -14
 # define ERROR_IN_GETTING_TIME -15
+# define FAILED_MUTEX_INIT -16
 
 /* Error struct */
 
@@ -86,20 +89,24 @@ void		process_input(t_sim_info *sim, int argc, char **argv, t_error *error);
 /* Initilialization utilities */
 
 void		init_variable(t_philo **philo, t_sim_info *sim, t_error *error);
+void		init_error(t_error *error);
+void		init_sim(t_sim_info *sim, int16_t *error);
 
-/* Simulation Management Utilities */
+/* safe_access_utils */
 
 void		set_stop(t_sim_info *sim);
 bool		should_stop(t_sim_info *sim);
 void		safe_message(t_philo *philo, const char *str, size_t timestamp);
+void		safe_set(void *data, pthread_mutex_t *lock, int type, int value);
+int16_t		safe_get_err_val(t_error *err);
 
 /* Actions utilities */
 
 bool		should_stop(t_sim_info *sim);
-int16_t		philo_take_fork(t_philo *philo);
-int16_t		philo_eat(t_philo *philo);
-int16_t		philo_sleep(t_philo *philo);
-int16_t		philo_think(t_philo *philo);
+void		philo_take_fork(t_philo *philo);
+void		philo_eat(t_philo *philo);
+void		philo_sleep(t_philo *philo);
+void		philo_think(t_philo *philo);
 
 /* Cleaning utilities */
 

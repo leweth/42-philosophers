@@ -6,13 +6,13 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:32:14 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 10:54:50 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:41:48 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int16_t	philo_take_fork(t_philo *philo)
+void	philo_take_fork(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -21,34 +21,39 @@ int16_t	philo_take_fork(t_philo *philo)
 	current_time = 0;
 	err = extract_time(&current_time);
 	if (err != NONE)
-		return (err);
+	{
+		safe_set(&philo->err->err_code, philo->err->err_lock, INT_DTYPE, err);
+		return ;
+	}
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (!should_stop(philo->c_sim))
 		safe_message(philo, "has taken a fork", elapsed_time);
-	return (NONE);
 }
 
-int16_t	philo_eat(t_philo *philo)
+void	philo_eat(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
-	int16_t		err;
+	int16_t	err;
 
 	current_time = 0;
 	err = extract_time(&current_time);
 	if (err != NONE)
-		return (err);
+	{
+		safe_set(&philo->err->err_code, philo->err->err_lock, INT_DTYPE, err);
+		return ;
+	}
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (!should_stop(philo->c_sim))
 	{
 		safe_message(philo, "is eating", elapsed_time);
 		safe_extract(&philo->last_time_ate, philo->la_lock);
 		millisleep(*(philo->c_sim), philo->c_sim->time_to_eat);
+		philo->eating_counter++;
 	}
-	return (NONE);
 }
 
-int16_t	philo_sleep(t_philo *philo)
+void	philo_sleep(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -57,16 +62,18 @@ int16_t	philo_sleep(t_philo *philo)
 	current_time = 0;
 	err = extract_time(&current_time);
 	if (err != NONE)
-		return (err);
+	{
+		safe_set(&philo->err->err_code, philo->err->err_lock, INT_DTYPE, err);
+		return ;
+	}
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (should_stop(philo->c_sim))
-		return (NONE);
+		return ;
 	safe_message(philo, "is sleeping", elapsed_time);
 	millisleep(*(philo->c_sim), philo->c_sim->time_to_sleep);
-	return (NONE);
 }
 
-int16_t	philo_think(t_philo *philo)
+void	philo_think(t_philo *philo)
 {
 	size_t	current_time;
 	size_t	elapsed_time;
@@ -75,9 +82,11 @@ int16_t	philo_think(t_philo *philo)
 	current_time = 0;
 	err = extract_time(&current_time);
 	if (err != NONE)
-		return (err);
+	{
+		safe_set(&philo->err->err_code, philo->err->err_lock, INT_DTYPE, err);
+		return ;
+	}
 	elapsed_time = current_time - philo->c_sim->start_time;
 	if (!should_stop(philo->c_sim))
 		safe_message(philo, "is thinking", elapsed_time);
-	return (NONE);
 }

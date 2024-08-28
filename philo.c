@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:36:19 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 17:50:32 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 19:18:27 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ void check_leaks(void)
 void	simulate_lone_philo(t_philo *philo)
 {
 	size_t	current_time;
+	int		err;
 
 	current_time = 0;
 	millisleep(*(philo->c_sim), philo->c_sim->time_to_die);
-	extract_time(&current_time);
+	err = extract_time(&current_time);
+	safe_set(&philo->err->err_code, philo->err->err_lock, INT_DTYPE, err);
 	safe_message(philo, "died", current_time - philo->c_sim->start_time);
 	pthread_mutex_unlock(philo->fork_lock);
 }
@@ -31,31 +33,31 @@ void	simulate_lone_philo(t_philo *philo)
 void	*simulate_sequence(void *data)
 {
 	t_philo	*philo;
-	int16_t	err;
 
 	philo = (t_philo *) data;
 	safe_extract(&philo->last_time_ate, philo->la_lock);
-		if (philo->id % 2 == 0)
-			err = philo_sleep(philo);
+	if (philo->id % 2 == 0)
+		philo_sleep(philo);
 	while (true)
 	{
 		if (should_stop(philo->c_sim))
 			break ;
-		err = philo_think(philo);
-		pthread_mutex_lock(philo->fork_lock); // **
+		philo_think(philo);
+		pthread_mutex_lock(philo->fork_lock);
 		if (philo->c_sim->num_of_philos == 1)
 			return (simulate_lone_philo(philo), NULL);
-		pthread_mutex_lock((philo->next)->fork_lock); // ==
+		pthread_mutex_lock((philo->next)->fork_lock);
 		philo_take_fork(philo);
-		err = philo_eat(philo);
-		philo->eating_counter++;
-		pthread_mutex_unlock((philo->next)->fork_lock); // ==
-		pthread_mutex_unlock(philo->fork_lock); // ** 
-		// if (philo->id % 2 == 1)
-			err = philo_sleep(philo);
+		philo_eat(philo);
+		pthread_mutex_unlock((philo->next)->fork_lock);
+		pthread_mutex_unlock(philo->fork_lock);
+		philo_sleep(philo);
 		if ((philo->c_sim->num_of_times_to_eat != UNSPECIFIED
 			&& philo->eating_counter == philo->c_sim->num_of_times_to_eat))
-				{philo->finished = true; break ;}
+		{
+			philo->finished = true; 
+			break ;
+		}
 	}
 	return (NULL);
 }
@@ -81,8 +83,8 @@ bool	done_eating(t_philo *philo)
 void	observer(t_philo *philo)
 {
 	t_philo	*pass;
-size_t	current_time;
-size_t	elapsed_time;
+	size_t	current_time;
+	size_t	elapsed_time;
 
 	if (philo->c_sim->num_of_philos == 1)
 		return ;
@@ -92,8 +94,8 @@ size_t	elapsed_time;
 	{
 		pthread_mutex_lock(pass->la_lock);
 		extract_time(&current_time);
-		if (current_time - pass->last_time_ate >= philo->c_sim->time_to_die
-			&& philo->finished == false)
+		if ((current_time - pass->last_time_ate >= philo->c_sim->time_to_die
+			&& philo->finished == false) || safe_get_err_val(philo->err) != NONE)
 		{
 			set_stop(pass->c_sim);
 			elapsed_time = current_time - philo->c_sim->start_time;
@@ -149,5 +151,5 @@ int main(int argc, char **argv)
 		return (print_error(err.err_code), clean_all(philo, &sim, &err),
 			FAILURE);
 	run_simulation(philo);
-	clean_philos(philo);
+	clean_all(philo, &sim, &err);
 }
