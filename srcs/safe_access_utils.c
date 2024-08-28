@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sim_manage_utils.c                                 :+:      :+:    :+:   */
+/*   safe_access_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:40:47 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 19:18:30 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:42:26 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,18 @@ bool	should_stop(t_sim_info *sim)
 	if (sim->stop == true)
 		flag = true;
 	pthread_mutex_unlock(sim->stop_lock);
+	return (flag);
+}
+
+bool	get_ret_finish(t_philo *philo)
+{
+	bool	flag;
+
+	flag = false;
+	pthread_mutex_lock(philo->finish_lock);
+	if (philo->finished == true)
+		flag = true;
+	pthread_mutex_unlock(philo->finish_lock);
 	return (flag);
 }
 

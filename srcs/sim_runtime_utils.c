@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/28 21:23:30 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 21:25:41 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:44:45 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	*simulate_sequence(void *data)
 			break ;
 		philo_think(philo);
 		pthread_mutex_lock(philo->fork_lock);
+		philo_take_fork(philo);
 		if (philo->c_sim->num_of_philos == 1)
 			return (simulate_lone_philo(philo), NULL);
 		pthread_mutex_lock((philo->next)->fork_lock);
@@ -49,7 +50,7 @@ void	*simulate_sequence(void *data)
 		philo_sleep(philo);
 		if (NUM_OF_TIMES_TO_EAT != UNSPECIFIED
 			&& philo->eating_counter == NUM_OF_TIMES_TO_EAT)
-			return (philo->finished = true, NULL); 
+			return (safe_set(&philo->finish_lock, philo->finish_lock, BOOL_DTYPE, true), NULL); 
 	}
 	return (NULL);
 }
@@ -63,7 +64,7 @@ bool	done_eating(t_philo *philo)
 	sum = 0;
 	while (i < philo->c_sim->num_of_philos)
 	{
-		sum += philo->finished;
+		sum += get_ret_finish(philo);
 		philo = philo->next;
 		i++;
 	}

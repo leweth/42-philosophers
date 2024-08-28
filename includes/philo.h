@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 22:01:02 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:42:46 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_philo
 	t_sim_info		*c_sim;
 	t_error			*err;
 	bool			finished;
+	pthread_mutex_t	*finish_lock;
 	struct s_philo	*next;
 }			t_philo;
 
@@ -103,6 +104,7 @@ bool		should_stop(t_sim_info *sim);
 void		safe_message(t_philo *philo, const char *str, size_t timestamp);
 void		safe_set(void *data, pthread_mutex_t *lock, int type, int value);
 int16_t		safe_get_err_val(t_error *err);
+bool		get_ret_finish(t_philo *philo);
 
 /* Actions utilities */
 

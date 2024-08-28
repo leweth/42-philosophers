@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:54:28 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 10:50:59 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 22:26:05 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int64_t	extract_time(size_t *ctime)
 	struct timeval	tmp;
 	int				err;
 
-	memset(&tmp, 0, sizeof(struct timeval));
 	err = gettimeofday(&tmp, NULL);
 	if (err < 0)
 		return (ERROR_IN_GETTING_TIME);
