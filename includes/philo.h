@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 04:13:59 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 10:59:55 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:50:56 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,18 +73,19 @@ typedef struct s_philo
 	size_t			last_time_ate;
 	pthread_mutex_t	*la_lock;
 	t_sim_info		*c_sim;
-	int16_t			*err;
+	t_error			*err;
+	bool			finished;
 	struct s_philo	*next;
 }			t_philo;
 
 /* Input processing functions */
 
 u_int32_t	ft_atou32(char *str, int16_t *err);
-int16_t		process_input(t_sim_info *sim, int argc, char **argv, int16_t *error);
+void		process_input(t_sim_info *sim, int argc, char **argv, t_error *error);
 
 /* Initilialization utilities */
 
-int16_t		init_variable(t_philo **philo, t_sim_info *sim, int16_t *error);
+void		init_variable(t_philo **philo, t_sim_info *sim, t_error *error);
 
 /* Simulation Management Utilities */
 
@@ -103,6 +104,7 @@ int16_t		philo_think(t_philo *philo);
 /* Cleaning utilities */
 
 void		clean_philos(t_philo *top);
+void		clean_all(t_philo *philo, t_sim_info *sim, t_error *error);
 
 /* Time utils */
 

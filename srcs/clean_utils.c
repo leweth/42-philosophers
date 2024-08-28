@@ -6,11 +6,23 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:15:15 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/19 15:45:37 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:47:25 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+void	clean_lock(pthread_mutex_t *lock)
+{
+	pthread_mutex_destroy(lock);
+	free(lock);
+}
+
+void	clean_sim(t_sim_info *sim)
+{
+	clean_lock(sim->printf_lock);
+	clean_lock(sim->stop_lock);
+}
 
 void	clean_philos(t_philo *top) // frees fork locks and the array of philos
 {
@@ -20,10 +32,10 @@ void	clean_philos(t_philo *top) // frees fork locks and the array of philos
 	uint32_t	i;
 
 	i = 0;
-	pass = top;
-	pthread_mutex_destroy(top->c_sim->stop_lock);
-	free(top->c_sim->stop_lock);
+	if (!top)
+		return ;
 	sim = top->c_sim;
+	pass = top;
 	while (i < sim->num_of_philos)
 	{
 		tmp = pass->next;
@@ -34,4 +46,11 @@ void	clean_philos(t_philo *top) // frees fork locks and the array of philos
 		pass = tmp;
 		i++;
 	}
+}
+
+void	clean_all(t_philo *philo, t_sim_info *sim, t_error *error)
+{
+	clean_sim(sim);
+	clean_lock(error->err_lock);
+	clean_philos(philo);
 }

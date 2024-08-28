@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 22:18:27 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/28 17:04:15 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, int16_t *error)
 	philo->eating_counter = 0;
 	philo->c_sim = sim;
 	philo->err = error;
+	philo->finished = false;
   	return (philo);
 }
 
