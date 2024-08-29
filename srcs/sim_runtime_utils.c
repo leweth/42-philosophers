@@ -50,7 +50,7 @@ void	*simulate_sequence(void *data)
 		philo_sleep(philo);
 		if (NUM_OF_TIMES_TO_EAT != UNSPECIFIED
 			&& philo->eating_counter == NUM_OF_TIMES_TO_EAT)
-			return (safe_set(&philo->finish_lock, philo->finish_lock, BOOL_DTYPE, true), NULL); 
+			return (safe_set(&philo->finished, philo->finish_lock, BOOL_DTYPE, true), NULL); 
 	}
 	return (NULL);
 }
