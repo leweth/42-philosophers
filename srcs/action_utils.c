@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 15:32:14 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 19:41:48 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/30 19:11:09 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	philo_eat(t_philo *philo)
 	{
 		safe_message(philo, "is eating", elapsed_time);
 		safe_extract(&philo->last_time_ate, philo->la_lock);
-		millisleep(*(philo->c_sim), philo->c_sim->time_to_eat);
 		philo->eating_counter++;
+		millisleep(*(philo->c_sim), philo->c_sim->time_to_eat);
 	}
 }
 
@@ -67,10 +67,11 @@ void	philo_sleep(t_philo *philo)
 		return ;
 	}
 	elapsed_time = current_time - philo->c_sim->start_time;
-	if (should_stop(philo->c_sim))
-		return ;
-	safe_message(philo, "is sleeping", elapsed_time);
-	millisleep(*(philo->c_sim), philo->c_sim->time_to_sleep);
+	if (!should_stop(philo->c_sim))
+	{
+		safe_message(philo, "is sleeping", elapsed_time);
+		millisleep(*(philo->c_sim), philo->c_sim->time_to_sleep);
+	}
 }
 
 void	philo_think(t_philo *philo)

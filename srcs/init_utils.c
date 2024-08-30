@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 22:39:12 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/30 19:36:12 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_sim(t_sim_info *sim, int16_t *error)
 
 	res = 0;
 	sim->stop = false;
+	// printf("%p\n", &sim->stop);
 	sim->stop_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 	if (!sim->stop_lock)
 	{

@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 22:40:47 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/28 22:42:26 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/30 19:15:10 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ bool	get_ret_finish(t_philo *philo)
 
 void	safe_message(t_philo *philo, const char *str, size_t timestamp)
 {
-	pthread_mutex_lock(philo->la_lock);
+	pthread_mutex_lock(philo->c_sim->printf_lock);
 	printf("%zu %u %s\n", timestamp, philo->id, str);
-	pthread_mutex_unlock(philo->la_lock);
+	pthread_mutex_unlock(philo->c_sim->printf_lock);
 }
 
 void	safe_set(void *data, pthread_mutex_t *lock, int type, int value)
