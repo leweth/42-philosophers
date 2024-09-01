@@ -1,11 +1,11 @@
 CC = cc 
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g#-fsanitize=address -g#-fsanitize=thread -g #-fsanitize=address # -g #
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=thread -g#-fsanitize=address -g#-fsanitize=thread -g #-fsanitize=address # -g #
 
 NAME = philo
 
 SRCS = philo.c srcs/ft_atou32.c srcs/input_processing.c srcs/print_error.c srcs/init_utils.c srcs/clean_utils.c \
-		srcs/action_utils.c srcs/time_utils.c srcs/sim_manage_utils.c
+		srcs/action_utils.c srcs/time_utils.c srcs/safe_access_utils.c srcs/sim_runtime_utils.c
 
 OBJS = ${SRCS:.c=.o}
 

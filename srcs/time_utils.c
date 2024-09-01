@@ -6,18 +6,17 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 19:54:28 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/23 22:33:54 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/09/01 10:19:34 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int64_t	extract_time(size_t *ctime)
+int16_t	extract_time(size_t *ctime)
 {
 	struct timeval	tmp;
-	int				err;
+	int16_t				err;
 
-	memset(&tmp, 0, sizeof(struct timeval));
 	err = gettimeofday(&tmp, NULL);
 	if (err < 0)
 		return (ERROR_IN_GETTING_TIME);
