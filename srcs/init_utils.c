@@ -6,7 +6,7 @@
 /*   By: mben-yah <mben-yah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 12:12:58 by mben-yah          #+#    #+#             */
-/*   Updated: 2024/08/30 19:36:12 by mben-yah         ###   ########.fr       */
+/*   Updated: 2024/08/30 20:29:22 by mben-yah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	init_sim(t_sim_info *sim, int16_t *error)
 
 	res = 0;
 	sim->stop = false;
-	// printf("%p\n", &sim->stop);
 	sim->stop_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 	if (!sim->stop_lock)
 	{
@@ -71,7 +70,7 @@ t_philo	*new_philo(u_int32_t id, t_sim_info *sim, t_error *error)
 		(pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 	if (!philo->fork_lock)
 		return (clean_philos(philo), error->err_code = FAILED_MALLOC_ERR, NULL);
-	pthread_mutex_init(philo->fork_lock, NULL); // what do they mean by initilize it? // you should dstroy this at the end
+	pthread_mutex_init(philo->fork_lock, NULL);
 	philo->la_lock = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
 	if (!philo->la_lock)
 		return (clean_philos(philo), error->err_code = FAILED_MALLOC_ERR, NULL);
